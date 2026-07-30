@@ -1,0 +1,176 @@
+/* =====================================================================
+   PROFILE / CHECKOUT / ORDER SUCCESS
+   ===================================================================== */
+
+.profile-layout{
+    display:grid;
+    grid-template-columns:280px 1fr;
+    gap:44px;
+    padding:60px 40px 120px;
+    max-width:1280px;
+    margin:0 auto;
+}
+
+.profile-card{
+    background:var(--card);
+    border:1px solid var(--line-soft);
+    border-radius:var(--radius-md);
+    padding:36px 28px;
+    text-align:center;
+    box-shadow:var(--shadow-sm);
+    height:fit-content;
+}
+
+.profile-avatar{
+    width:76px; height:76px;
+    border-radius:50%;
+    background:linear-gradient(135deg,var(--berry),var(--gold));
+    color:#fff;
+    font-family:'Fraunces', serif;
+    font-size:28px;
+    font-weight:600;
+    display:flex; align-items:center; justify-content:center;
+    margin:0 auto 18px;
+}
+
+.profile-card h3{ margin-bottom:4px; }
+.profile-card p{ font-size:13.5px; margin-bottom:24px; }
+
+.profile-card .btn-outline{ width:100%; }
+
+.orders-section h2{ margin-bottom:28px; }
+
+.order-card{
+    background:var(--card);
+    border:1px solid var(--line-soft);
+    border-radius:var(--radius-md);
+    padding:24px 28px;
+    margin-bottom:18px;
+    box-shadow:var(--shadow-sm);
+}
+
+.order-card-top{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:12px;
+}
+
+.order-card-top h4{ font-size:15.5px; }
+
+.order-status{
+    font-size:11.5px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    padding:5px 12px;
+    border-radius:100px;
+    background:var(--moss-tint);
+    color:var(--moss);
+}
+
+.order-status.status-processing{ background:var(--gold-tint); color:#8a6a1e; }
+.order-status.status-packed{ background:var(--moss-tint); color:var(--moss); }
+.order-status.status-shipped{ background:#E3ECF7; color:#2E5C9A; }
+.order-status.status-delivered{ background:var(--moss-tint); color:var(--moss); }
+.order-status.status-cancelled{ background:var(--berry-tint); color:var(--berry); }
+
+.admin-badge{
+    font-size:11px;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.03em;
+    padding:5px 12px;
+    border-radius:100px;
+    display:inline-block;
+    background:var(--canvas-deep);
+    color:var(--ink-soft);
+}
+
+.admin-badge.payment-pending{ background:var(--gold-tint); color:#8a6a1e; }
+.admin-badge.payment-paid{ background:var(--moss-tint); color:var(--moss); }
+.admin-badge.payment-failed{ background:var(--berry-tint); color:var(--berry); }
+.admin-badge.payment-refunded{ background:#E3ECF7; color:#2E5C9A; }
+
+.order-card p{ font-size:13.5px; }
+
+/* ---- Checkout ---- */
+
+.checkout-layout{
+    display:grid;
+    grid-template-columns:1.5fr 1fr;
+    gap:48px;
+    padding:60px 40px 120px;
+    max-width:1280px;
+    margin:0 auto;
+}
+
+.checkout-list{
+    background:var(--card);
+    border:1px solid var(--line-soft);
+    border-radius:var(--radius-md);
+    padding:8px 28px;
+}
+
+.checkout-line{
+    display:flex;
+    align-items:center;
+    gap:18px;
+    padding:20px 0;
+    border-bottom:1px solid var(--line-soft);
+}
+
+.checkout-line:last-child{ border-bottom:none; }
+
+.checkout-line img{
+    width:64px; height:64px;
+    border-radius:12px;
+    object-fit:cover;
+}
+
+.checkout-line-info{ flex:1; }
+.checkout-line-info h4{ font-size:15px; margin-bottom:4px; }
+.checkout-line-info p{ font-size:13px; }
+
+.checkout-line .line-price{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    color:var(--berry);
+}
+
+/* ---- Order success ---- */
+
+.success-page{
+    text-align:center;
+    max-width:520px;
+    margin:0 auto;
+    padding:100px 24px 140px;
+}
+
+.success-icon{
+    width:84px; height:84px;
+    border-radius:50%;
+    background:var(--moss-tint);
+    color:var(--moss);
+    font-size:36px;
+    display:flex; align-items:center; justify-content:center;
+    margin:0 auto 30px;
+}
+
+.success-page h1{ margin-bottom:14px; }
+.success-page p{ margin-bottom:36px; }
+
+.order-ref{
+    display:inline-block;
+    background:var(--canvas-deep);
+    padding:12px 22px;
+    border-radius:100px;
+    font-weight:700;
+    color:var(--ink);
+    margin-bottom:36px;
+}
+
+@media (max-width:900px){
+
+    .profile-layout, .checkout-layout{ grid-template-columns:1fr; padding:40px 24px 90px; }
+}

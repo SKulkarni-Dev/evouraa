@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Contact | Loop & Love</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,560;9..144,600;9..144,700&family=Karla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages.css') }}">
+
+</head>
+<body>
+
+{% include "_header.html" %}
+{% include "_flash.html" %}
+
+    <section class="contact-layout">
+
+        <div class="contact-info">
+            <span class="eyebrow">Get in touch</span>
+            <h1>We'd love to hear from you.</h1>
+            <p>Questions about an order, a custom request, or just want to say hi? Reach out — we reply within 24 hours.</p>
+
+            <div class="contact-detail">
+                <i class="fa-solid fa-envelope"></i>
+                <div><h4>Email</h4><p>hello@loopandlove.in</p></div>
+            </div>
+            <div class="contact-detail">
+                <i class="fa-solid fa-phone"></i>
+                <div><h4>Phone</h4><p>+91 98765 43210</p></div>
+            </div>
+            <div class="contact-detail">
+                <i class="fa-solid fa-location-dot"></i>
+                <div><h4>Studio</h4><p>Bengaluru, Karnataka, India</p></div>
+            </div>
+
+            <div class="socials" style="margin-top:10px;">
+                <a href="#"><i class="fab fa-instagram" style="color:var(--ink);"></i></a>
+                <a href="#"><i class="fab fa-facebook-f" style="color:var(--ink);"></i></a>
+                <a href="#"><i class="fab fa-whatsapp" style="color:var(--ink);"></i></a>
+            </div>
+        </div>
+
+        <div class="contact-form-card">
+            <h2>Send us a message</h2>
+
+            <form action="/contact" method="POST">
+
+                <div class="field-row">
+                    <div class="field-group">
+                        <label>Name</label>
+                        <input type="text" name="name" placeholder="Your name" required>
+                    </div>
+                    <div class="field-group">
+                        <label>Email</label>
+                        <input type="email" name="email" placeholder="you@example.com" required>
+                    </div>
+                </div>
+
+                <div class="field-group">
+                    <label>Subject</label>
+                    <input type="text" name="subject" placeholder="What's this about?">
+                </div>
+
+                <div class="field-group">
+                    <label>Message</label>
+                    <textarea name="message" rows="5" placeholder="Tell us more..." required></textarea>
+                </div>
+
+                <button type="submit" class="btn btn-full">Send Message</button>
+            </form>
+        </div>
+
+    </section>
+
+{% include "_footer.html" %}
+
+    <script src="{{ url_for('static', filename='js/site.js') }}"></script>
+
+</body>
+</html>

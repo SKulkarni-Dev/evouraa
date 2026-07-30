@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Orders | Admin</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,560;9..144,600;9..144,700&family=Karla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/account.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+
+</head>
+<body>
+
+<header class="admin-topbar">
+    <a href="{{ url_for('admin_bp.orders') }}" class="admin-logo">
+        <i class="fa-solid fa-shield-halved"></i> Loop &amp; Love &middot; Admin
+    </a>
+    <a href="{{ url_for('admin_bp.admin_logout') }}" class="btn-outline">Logout</a>
+</header>
+
+{% include "_flash.html" %}
+
+<section class="admin-page">
+
+    <div class="admin-page-head">
+        <h1>Orders</h1>
+
+        <div class="admin-filters">
+            <a href="{{ url_for('admin_bp.orders') }}" class="admin-chip {{ 'active' if not status_filter }}">All</a>
+            {% for s in statuses %}
+            <a href="{{ url_for('admin_bp.orders', status=s) }}" class="admin-chip {{ 'active' if status_filter == s }}">{{ s }}</a>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% if orders %}
+    <div class="admin-table-wrap">
+        <table class="admin-table">
+            <thead>
+                <tr>
+                    <th>Order #</th>
+                    <th>Customer</th>
+                    <th>Date</th>
+                    <th>Total</th>
+                    <th>Payment</th>
+                    <th>Status</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td>{{ order.order_number or ('#' ~ order.id) }}</td>
+                    <td>{{ order.user.fullname if order.user else '—' }}</td>
+                    <td>{{ order.created_at.strftime('%d %b %Y') if order.created_at else '' }}</td>
+                    <td>₹{{ "%.0f"|format(order.total) }}</td>
+                    <td><span class="admin-badge payment-{{ order.payment_status|lower }}">{{ order.payment_status }}</span></td>
+                    <td><span class="admin-badge status-{{ order.order_status|lower }}">{{ order.order_status }}</span></td>
+                    <td><a href="{{ url_for('admin_bp.order_detail', order_id=order.id) }}" class="btn-ghost">View <i class="fa-solid fa-arrow-right"></i></a></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <p class="empty-note">No orders match this filter.</p>
+    {% endif %}
+
+</section>
+
+</body>
+</html>

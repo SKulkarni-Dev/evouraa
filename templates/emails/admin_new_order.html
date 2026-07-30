@@ -1,0 +1,29 @@
+<div style="font-family:Georgia,'Times New Roman',serif;max-width:520px;margin:0 auto;padding:32px;color:#2B2320;">
+    <h2 style="color:#7B2D3E;margin-bottom:4px;">New order received</h2>
+    <p><strong>{{ order.order_number }}</strong> &middot; &#8377;{{ "%.0f"|format(order.total) }} &middot; Paid via {{ order.payment_method }}</p>
+
+    <h4 style="margin-bottom:6px;">Customer</h4>
+    <p style="margin:0;">
+        {{ order.user.fullname }}<br>
+        {{ order.user.email }} &middot; {{ order.user.phone }}
+    </p>
+
+    <h4 style="margin:16px 0 6px;">Items</h4>
+    <table style="width:100%;border-collapse:collapse;">
+        {% for item in order.items %}
+        <tr style="border-bottom:1px solid #eee;">
+            <td style="padding:8px 0;">{{ item.product.name if item.product else 'Item' }} &times; {{ item.quantity }}</td>
+            <td style="padding:8px 0;text-align:right;">&#8377;{{ "%.0f"|format(item.price * item.quantity) }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h4 style="margin:16px 0 6px;">Ship To</h4>
+    <p style="margin:0;line-height:1.5;">
+        {{ order.shipping_name }}<br>
+        {{ order.shipping_line1 }}{% if order.shipping_line2 %}, {{ order.shipping_line2 }}{% endif %}<br>
+        {{ order.shipping_city }}, {{ order.shipping_state }} {{ order.shipping_pincode }}<br>
+        {{ order.shipping_country }}<br>
+        Phone: {{ order.shipping_phone }}
+    </p>
+</div>

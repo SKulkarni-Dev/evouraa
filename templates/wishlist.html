@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Your Wishlist | Loop & Love</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,560;9..144,600;9..144,700&family=Karla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/shop.css') }}">
+
+</head>
+<body>
+
+{% include "_header.html" %}
+{% include "_flash.html" %}
+
+    <section class="page-hero">
+        <span class="eyebrow" style="justify-content:center;">Saved for later</span>
+        <h1>Your Wishlist</h1>
+        <p>{{ items|length }} piece{{ 's' if items|length != 1 else '' }} you've fallen for.</p>
+    </section>
+
+    <section class="container">
+        {% if items %}
+        <div class="product-grid">
+            {% for item in items %}
+            <div class="product-card reveal" data-wishlist-row>
+                <a href="{{ url_for('products.product_details', product_id=item.product.id) }}" class="product-card-media">
+                    {% if item.product.stock == 0 %}
+                    <span class="badge badge-soldout">Sold Out</span>
+                    {% elif item.product.featured %}
+                    <span class="badge badge-bestseller">Bestseller</span>
+                    {% endif %}
+                    <img src="{{ url_for('static', filename='assets/images/' + item.product.image) }}" alt="{{ item.product.name }}">
+                </a>
+
+                <button class="wish-btn active" data-product-id="{{ item.product.id }}" title="Remove from wishlist"><i class="fa-solid fa-heart"></i></button>
+
+                <div class="product-card-body">
+                    <a href="{{ url_for('products.product_details', product_id=item.product.id) }}"><h3>{{ item.product.name }}</h3></a>
+                    <span class="chip">{{ item.product.category }}</span>
+                    <div class="card-rating"><span class="stars">★★★★★</span><span>{{ item.product.rating }} ({{ item.product.reviews }})</span></div>
+                    <div class="product-card-footer">
+                        <p class="price">₹{{ "%.0f"|format(item.product.price) }}</p>
+                        <button class="add-to-cart-btn icon-btn" data-product-id="{{ item.product.id }}" data-product-name="{{ item.product.name }}" title="Add to cart" {% if item.product.stock == 0 %}disabled{% endif %}>
+                            <i class="fa-solid fa-bag-shopping"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="empty-cart">
+            <i class="fa-regular fa-heart"></i>
+            <h3>Your wishlist is empty</h3>
+            <p>Tap the heart icon on any product to save it here.</p>
+            <a href="/shop" class="btn">Explore the Shop</a>
+        </div>
+        {% endif %}
+    </section>
+
+{% include "_footer.html" %}
+
+    <script src="{{ url_for('static', filename='js/site.js') }}"></script>
+
+</body>
+</html>

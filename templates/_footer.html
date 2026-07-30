@@ -1,0 +1,47 @@
+<footer>
+    <div class="footer-grid">
+        <div class="footer-brand">
+            <a href="/" class="logo">
+                <img src="{{ url_for('static', filename='assets/images/logo.jpeg') }}" alt="Loop & Love">
+                <span>Loop &amp; Love</span>
+            </a>
+            <p>Handmade crochet creations, looped stitch by stitch and shipped with care across India.</p>
+            <div class="socials">
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-facebook-f"></i></a>
+                <a href="#"><i class="fab fa-pinterest-p"></i></a>
+                <a href="#"><i class="fab fa-whatsapp"></i></a>
+            </div>
+        </div>
+
+        <div class="footer-col">
+            <h4>Shop</h4>
+            <a href="/shop">All Products</a>
+            <a href="/category/Teddy Bears">Teddy Bears</a>
+            <a href="/category/Bouquets">Bouquets</a>
+            <a href="/category/Flowers">Flowers</a>
+        </div>
+
+        <div class="footer-col">
+            <h4>Company</h4>
+            <a href="/about">Our Story</a>
+            <a href="/contact">Contact</a>
+            <a href="/wishlist">Wishlist</a>
+            <a href="/cart">Cart</a>
+        </div>
+
+        <div class="footer-col">
+            <h4>Stay in the loop</h4>
+            <p style="color:#B8AFA2;font-size:14.5px;margin-bottom:16px;">Subscribe for new arrivals and offers.</p>
+            <form class="footer-form">
+                <input type="email" placeholder="Your email" required>
+                <button type="submit"><i class="fa-solid fa-arrow-right"></i></button>
+            </form>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <span>© {{ current_year }} Loop &amp; Love. All rights reserved.</span>
+        <span>Made with ♥ and a lot of yarn.</span>
+    </div>
+</footer>

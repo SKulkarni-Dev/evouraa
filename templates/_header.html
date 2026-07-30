@@ -1,0 +1,34 @@
+<div class="announcement">Free shipping over ₹999 · Handmade to order · Custom requests welcome</div>
+
+<header>
+    <nav>
+        <a href="/" class="logo">
+            <img src="{{ url_for('static', filename='assets/images/logo.jpeg') }}" alt="Loop & Love">
+            <span>Loop &amp; Love</span>
+        </a>
+
+        <button class="nav-toggle" aria-label="Open menu" aria-expanded="false">
+            <span></span><span></span><span></span>
+        </button>
+
+        <ul>
+            <li><a href="/" {% if request.path == '/' %}class="active"{% endif %}>Home</a></li>
+            <li><a href="/shop" {% if request.path.startswith('/shop') %}class="active"{% endif %}>Shop</a></li>
+            <li><a href="/about" {% if request.path == '/about' %}class="active"{% endif %}>About</a></li>
+            <li><a href="/contact" {% if request.path == '/contact' %}class="active"{% endif %}>Contact</a></li>
+        </ul>
+
+        <div class="nav-icons">
+            <a href="/wishlist" title="Wishlist"><i class="fa-regular fa-heart"></i></a>
+            <a href="/cart" title="Cart">
+                <i class="fa-solid fa-bag-shopping"></i>
+                <span class="nav-badge nav-cart-badge" style="display:{{ 'flex' if cart_count and cart_count > 0 else 'none' }};">{{ cart_count or 0 }}</span>
+            </a>
+            {% if logged_in_user %}
+            <a href="/profile" title="My account"><i class="fa-regular fa-user"></i></a>
+            {% else %}
+            <a href="/login" title="Login"><i class="fa-regular fa-user"></i></a>
+            {% endif %}
+        </div>
+    </nav>
+</header>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Payment | Loop & Love</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,560;9..144,600;9..144,700&family=Karla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/account.css') }}">
+
+    <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+
+</head>
+<body>
+
+{% include "_header.html" %}
+{% include "_flash.html" %}
+
+    <section class="success-page">
+        <div class="success-icon"><i class="fa-solid fa-lock"></i></div>
+        <h1>Complete Your Payment</h1>
+        <p>Order {{ order.order_number }} · ₹{{ "%.0f"|format(order.total) }}</p>
+
+        <div style="display:flex;gap:16px;justify-content:center;flex-wrap:wrap;">
+            <button id="payNowBtn" class="btn">Pay Now</button>
+            <a href="/cart" class="btn-outline">Cancel</a>
+        </div>
+
+        <p style="margin-top:20px;font-size:13px;color:var(--ink-faint);">
+            A secure Razorpay window will open. Your order is only confirmed once payment is verified.
+        </p>
+    </section>
+
+{% include "_footer.html" %}
+
+<script>
+    const RAZORPAY_KEY_ID = {{ razorpay_key_id|tojson }};
+    const ORDER_ID = {{ order.id|tojson }};
+    const RAZORPAY_ORDER_ID = {{ order.razorpay_order_id|tojson }};
+    const AMOUNT_PAISE = {{ (order.total * 100)|round|int }};
+    const CUSTOMER_NAME = {{ (user.fullname if user else "")|tojson }};
+    const CUSTOMER_EMAIL = {{ (user.email if user else "")|tojson }};
+    const CUSTOMER_PHONE = {{ (user.phone if user else "")|tojson }};
+    const VERIFY_URL = {{ url_for('checkout_bp.verify_payment')|tojson }};
+    const FAILED_URL = {{ url_for('checkout_bp.payment_failed', order_id=order.id)|tojson }};
+</script>
+<script src="{{ url_for('static', filename='js/checkout_pay.js') }}"></script>
+
+</body>
+</html>

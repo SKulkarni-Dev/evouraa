@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Order {{ order.order_number }} | Admin</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,560;9..144,600;9..144,700&family=Karla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/account.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/admin.css') }}">
+
+</head>
+<body>
+
+<header class="admin-topbar">
+    <a href="{{ url_for('admin_bp.orders') }}" class="admin-logo">
+        <i class="fa-solid fa-shield-halved"></i> Loop &amp; Love &middot; Admin
+    </a>
+    <a href="{{ url_for('admin_bp.admin_logout') }}" class="btn-outline">Logout</a>
+</header>
+
+{% include "_flash.html" %}
+
+<section class="admin-page admin-order-detail">
+
+    <a href="{{ url_for('admin_bp.orders') }}" class="btn-ghost" style="margin-bottom:20px;"><i class="fa-solid fa-arrow-left"></i>&nbsp; All Orders</a>
+
+    <div class="admin-order-grid">
+
+        <div>
+            <div class="card-surface" style="padding:28px;margin-bottom:24px;">
+                <h2 style="margin-bottom:4px;">{{ order.order_number }}</h2>
+                <p style="color:var(--ink-soft);margin-bottom:20px;">
+                    Placed {{ order.created_at.strftime('%d %b %Y, %I:%M %p') if order.created_at else '' }}
+                    by {{ order.user.fullname if order.user else '—' }} ({{ order.user.email if order.user else '' }})
+                </p>
+
+                {% for item in order.items %}
+                <div class="checkout-line">
+                    {% if item.product %}
+                    <img src="{{ url_for('static', filename='assets/images/' + item.product.image) }}" alt="{{ item.product.name }}">
+                    {% endif %}
+                    <div class="checkout-line-info">
+                        <h4>{{ item.product.name if item.product else 'Item removed' }}</h4>
+                        <p>Qty {{ item.quantity }} · ₹{{ "%.0f"|format(item.price) }} each</p>
+                    </div>
+                    <span class="line-price">₹{{ "%.0f"|format(item.price * item.quantity) }}</span>
+                </div>
+                {% endfor %}
+
+                <div class="summary-row summary-total" style="margin-top:12px;">
+                    <span>Total</span>
+                    <span>₹{{ "%.0f"|format(order.total) }}</span>
+                </div>
+            </div>
+
+            <div class="card-surface" style="padding:28px;">
+                <h3 style="margin-bottom:14px;">Shipping Address</h3>
+                <p style="line-height:1.6;">
+                    {{ order.shipping_name }}<br>
+                    {{ order.shipping_line1 }}{% if order.shipping_line2 %}, {{ order.shipping_line2 }}{% endif %}<br>
+                    {{ order.shipping_city }}, {{ order.shipping_state }} {{ order.shipping_pincode }}<br>
+                    {{ order.shipping_country }}<br>
+                    Phone: {{ order.shipping_phone }}
+                </p>
+            </div>
+        </div>
+
+        <div>
+            <div class="card-surface" style="padding:28px;margin-bottom:24px;">
+                <h3 style="margin-bottom:14px;">Order Status</h3>
+                <p style="margin-bottom:12px;">
+                    Current: <span class="admin-badge status-{{ order.order_status|lower }}">{{ order.order_status }}</span>
+                </p>
+
+                <form action="{{ url_for('admin_bp.update_order_status', order_id=order.id) }}" method="POST">
+                    <div class="field-group">
+                        <select name="order_status">
+                            {% for s in order_statuses %}
+                            <option value="{{ s }}" {{ 'selected' if s == order.order_status }}>{{ s }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-full">Update Status</button>
+                </form>
+            </div>
+
+            <div class="card-surface" style="padding:28px;">
+                <h3 style="margin-bottom:14px;">Payment Status</h3>
+                <p style="margin-bottom:12px;">
+                    Current: <span class="admin-badge payment-{{ order.payment_status|lower }}">{{ order.payment_status }}</span>
+                    &middot; {{ order.payment_method }}
+                </p>
+                {% if order.razorpay_payment_id %}
+                <p style="font-size:12.5px;color:var(--ink-faint);margin-bottom:12px;">Razorpay payment: {{ order.razorpay_payment_id }}</p>
+                {% endif %}
+
+                <form action="{{ url_for('admin_bp.update_payment_status', order_id=order.id) }}" method="POST">
+                    <div class="field-group">
+                        <select name="payment_status">
+                            {% for s in payment_statuses %}
+                            <option value="{{ s }}" {{ 'selected' if s == order.payment_status }}>{{ s }}</option>
+                            {% endfor %}
+                        </select>
+                    </div>
+                    <button type="submit" class="btn-outline btn-full">Update Payment Status</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+</body>
+</html>

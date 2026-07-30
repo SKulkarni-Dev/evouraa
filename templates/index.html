@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Loop & Love | Handmade Crochet, Made For You</title>
+    <meta name="description" content="Handmade crochet teddies, bouquets and gifts crafted stitch by stitch. Free shipping over ₹999.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,560;9..144,600;9..144,700&family=Karla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/home.css') }}">
+
+</head>
+<body>
+
+{% include "_header.html" %}
+{% include "_flash.html" %}
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-text">
+            <span class="eyebrow">Handmade in small batches</span>
+            <h1>Every stitch<br>tells a story.</h1>
+            <p class="hero-lede">
+                Each piece is looped by hand, one stitch at a time — soft,
+                durable, and made to be loved for years, not seasons.
+            </p>
+
+            <div class="hero-actions">
+                <a href="/shop" class="btn">Shop the collection</a>
+                <a href="/about" class="btn-outline">Our story</a>
+            </div>
+
+            <div class="hero-trust">
+                <div><strong>4.8★</strong><span>500+ happy customers</span></div>
+                <div><strong>100%</strong><span>Handmade to order</span></div>
+                <div><strong>7-day</strong><span>Easy returns</span></div>
+            </div>
+        </div>
+
+        <div class="hero-visual">
+            <div class="hero-shape">
+                <img src="{{ url_for('static', filename='assets/images/product1.jpeg') }}" alt="Handmade crochet teddy bear">
+            </div>
+            <div class="hero-float-card">
+                <span class="stars">★★★★★</span>
+                <p>"Better than the photos — my sister loves it."</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Trust strip -->
+    <section class="trust-strip container reveal">
+        <div class="trust-item">
+            <i class="fa-solid fa-hand-holding-heart"></i>
+            <div><h4>100% Handmade</h4><p>Every piece made start to finish, by hand.</p></div>
+        </div>
+        <div class="trust-item">
+            <i class="fa-solid fa-gift"></i>
+            <div><h4>Gift Ready</h4><p>Free gift-wrap available on request.</p></div>
+        </div>
+        <div class="trust-item">
+            <i class="fa-solid fa-truck-fast"></i>
+            <div><h4>Fast Dispatch</h4><p>Shipped within 48 hours, tracked door to door.</p></div>
+        </div>
+        <div class="trust-item">
+            <i class="fa-solid fa-shield-heart"></i>
+            <div><h4>Loved Or Returned</h4><p>7-day no-questions returns.</p></div>
+        </div>
+    </section>
+
+    <!-- Best sellers -->
+    <section class="container">
+        <div class="section-title reveal">
+            <span class="eyebrow">Fan favorites</span>
+            <h2>Best sellers</h2>
+            <p>The pieces our customers keep coming back for.</p>
+        </div>
+
+        <div class="product-grid">
+            {% for product in best_sellers %}
+            <div class="product-card reveal">
+                <a href="{{ url_for('products.product_details', product_id=product.id) }}" class="product-card-media">
+                    {% if product.stock <= 5 and product.stock > 0 %}
+                    <span class="badge badge-low">Only {{ product.stock }} left</span>
+                    {% elif product.featured %}
+                    <span class="badge badge-bestseller">Bestseller</span>
+                    {% endif %}
+                    <img src="{{ url_for('static', filename='assets/images/' + product.image) }}" alt="{{ product.name }}">
+                </a>
+                <button class="wish-btn" data-product-id="{{ product.id }}" title="Save to wishlist"><i class="fa-regular fa-heart"></i></button>
+                <div class="product-card-body">
+                    <a href="{{ url_for('products.product_details', product_id=product.id) }}"><h3>{{ product.name }}</h3></a>
+                    <div class="card-rating"><span class="stars">★★★★★</span><span>{{ product.rating }} ({{ product.reviews }})</span></div>
+                    <div class="product-card-footer">
+                        <p class="price">₹{{ "%.0f"|format(product.price) }}</p>
+                        <button class="add-to-cart-btn icon-btn" data-product-id="{{ product.id }}" data-product-name="{{ product.name }}" title="Add to cart">
+                            <i class="fa-solid fa-bag-shopping"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <p class="empty-note">New pieces are on their way — browse the full <a href="/shop">shop</a>.</p>
+            {% endfor %}
+        </div>
+
+        <div class="text-center reveal" style="margin-top:52px;">
+            <a href="/shop" class="btn-outline">View full collection</a>
+        </div>
+    </section>
+
+    <div class="loop-divider reveal">
+        <svg viewBox="0 0 120 40"><path d="M6 30 C 6 10, 34 10, 34 24 C 34 38, 62 38, 62 20 C 62 6, 90 6, 90 24 C 90 34, 110 32, 114 22"/></svg>
+    </div>
+
+    <!-- Testimonials -->
+    <section class="container">
+        <div class="section-title reveal">
+            <span class="eyebrow">Kind words</span>
+            <h2>Loved by our customers</h2>
+            <p>500+ five-star reviews, and counting.</p>
+        </div>
+
+        <div class="testimonial-grid">
+            <div class="testimonial-card reveal">
+                <div class="avatar">P</div>
+                <span class="stars">★★★★★</span>
+                <p>"Absolutely loved it. Beautiful craftsmanship and finishing — better than the photos."</p>
+                <h4>Priya, Bengaluru</h4>
+            </div>
+            <div class="testimonial-card reveal">
+                <div class="avatar">N</div>
+                <span class="stars">★★★★★</span>
+                <p>"Arrived well packed and right on time. The quality feels genuinely premium."</p>
+                <h4>Neha, Pune</h4>
+            </div>
+            <div class="testimonial-card reveal">
+                <div class="avatar">A</div>
+                <span class="stars">★★★★★</span>
+                <p>"Bought it as a gift and my sister hasn't put it down since. Ordering again."</p>
+                <h4>Ananya, Delhi</h4>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter reveal">
+        <div class="container newsletter-inner">
+            <span class="eyebrow" style="justify-content:center;">Stay in the loop</span>
+            <h2>Get 10% off your first order</h2>
+            <p>New arrivals, restocks, and subscriber-only offers — no spam, just crochet.</p>
+            <form class="newsletter-form">
+                <input type="email" placeholder="Enter your email" required>
+                <button type="submit" class="btn">Get my code</button>
+            </form>
+        </div>
+    </section>
+
+{% include "_footer.html" %}
+
+    <script src="{{ url_for('static', filename='js/site.js') }}"></script>
+
+</body>
+</html>

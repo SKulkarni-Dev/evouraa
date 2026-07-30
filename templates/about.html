@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Our Story | Loop & Love</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,560;9..144,600;9..144,700&family=Karla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/pages.css') }}">
+
+</head>
+<body>
+
+{% include "_header.html" %}
+{% include "_flash.html" %}
+
+    <section class="story-hero">
+        <div class="story-hero-text">
+            <span class="eyebrow">Our story</span>
+            <h1>Made with love, one loop at a time.</h1>
+            <p>Loop & Love began with a single hook, a ball of yarn, and a lot of patience. What started as a small hobby has grown into a home for handmade pieces that are meant to be kept, not just bought.</p>
+            <p>Every teddy, bouquet, and keepsake is looped by hand — no factories, no shortcuts. Just genuine craftsmanship, made for people who care about the difference.</p>
+            <a href="/shop" class="btn" style="margin-top:14px;">Shop the collection</a>
+        </div>
+        <div class="story-hero-image">
+            <img src="{{ url_for('static', filename='assets/images/product2.jpeg') }}" alt="Handmade crochet bouquet">
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="section-title reveal">
+            <span class="eyebrow">Why choose us</span>
+            <h2>What makes Loop &amp; Love different</h2>
+        </div>
+
+        <div class="value-grid">
+            <div class="value-card reveal">
+                <div class="value-icon"><i class="fa-solid fa-hand-holding-heart"></i></div>
+                <h2>Made With Love</h2>
+                <p>Every stitch is placed by hand — never mass-produced, never rushed.</p>
+            </div>
+            <div class="value-card reveal">
+                <div class="value-icon"><i class="fa-solid fa-leaf"></i></div>
+                <h2>Eco Friendly</h2>
+                <p>Natural fibers and mindful sourcing, so your gift is gentle on the planet too.</p>
+            </div>
+            <div class="value-card reveal">
+                <div class="value-icon"><i class="fa-solid fa-gift"></i></div>
+                <h2>Perfect Gifts</h2>
+                <p>Thoughtfully packaged pieces ready for birthdays, anniversaries, and just because.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="stat-strip reveal">
+            <div class="stat-item"><strong>500+</strong><span>Happy Customers</span></div>
+            <div class="stat-item"><strong>4.8★</strong><span>Average Rating</span></div>
+            <div class="stat-item"><strong>100%</strong><span>Handmade</span></div>
+            <div class="stat-item"><strong>7-Day</strong><span>Easy Returns</span></div>
+        </div>
+    </section>
+
+{% include "_footer.html" %}
+
+    <script src="{{ url_for('static', filename='js/site.js') }}"></script>
+
+</body>
+</html>

@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Shop | Loop & Love</title>
+    <meta name="description" content="Browse handmade crochet teddies, bouquets, flower pots and gifts.">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,560;9..144,600;9..144,700&family=Karla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/shop.css') }}">
+
+</head>
+<body>
+
+{% include "_header.html" %}
+{% include "_flash.html" %}
+
+    <section class="page-hero">
+        <span class="eyebrow" style="justify-content:center;">The full collection</span>
+        <h1>Shop Handmade</h1>
+        <p>{{ products|length }} pieces, each looped by hand — no two are ever quite the same.</p>
+    </section>
+
+    <section class="container shop-filter-bar">
+        <div class="shop-search">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" id="shop-search" placeholder="Search handmade pieces...">
+        </div>
+
+        <div class="shop-filter-selects">
+            <select id="shop-category">
+                <option value="">All Categories</option>
+                <option value="Teddy Bears">Teddy Bears</option>
+                <option value="Bouquets">Bouquets</option>
+                <option value="Flowers">Flowers</option>
+                <option value="Keychains">Keychains</option>
+            </select>
+
+            <select id="shop-sort">
+                <option value="">Sort By</option>
+                <option value="price-asc">Price: Low to High</option>
+                <option value="price-desc">Price: High to Low</option>
+                <option value="rating-desc">Top Rated</option>
+            </select>
+        </div>
+    </section>
+
+    <section class="container">
+        <div class="product-grid" id="shop-grid">
+            {% for product in products %}
+            <div class="product-card reveal"
+                 data-name="{{ product.name|lower }}"
+                 data-category="{{ product.category }}"
+                 data-price="{{ product.price }}"
+                 data-rating="{{ product.rating }}">
+
+                <a href="{{ url_for('products.product_details', product_id=product.id) }}" class="product-card-media">
+                    {% if product.stock <= 5 and product.stock > 0 %}
+                    <span class="badge badge-low">Only {{ product.stock }} left</span>
+                    {% elif product.featured %}
+                    <span class="badge badge-bestseller">Bestseller</span>
+                    {% elif product.stock == 0 %}
+                    <span class="badge badge-soldout">Sold Out</span>
+                    {% endif %}
+                    <img src="{{ url_for('static', filename='assets/images/' + product.image) }}" alt="{{ product.name }}">
+                </a>
+
+                <button class="wish-btn" data-product-id="{{ product.id }}" title="Save to wishlist"><i class="fa-regular fa-heart"></i></button>
+
+                <div class="product-card-body">
+                    <a href="{{ url_for('products.product_details', product_id=product.id) }}"><h3>{{ product.name }}</h3></a>
+                    <span class="chip">{{ product.category }}</span>
+                    <div class="card-rating"><span class="stars">★★★★★</span><span>{{ product.rating }} ({{ product.reviews }})</span></div>
+                    <div class="product-card-footer">
+                        <p class="price">₹{{ "%.0f"|format(product.price) }}</p>
+                        <button class="add-to-cart-btn icon-btn" data-product-id="{{ product.id }}" data-product-name="{{ product.name }}" title="Add to cart" {% if product.stock == 0 %}disabled{% endif %}>
+                            <i class="fa-solid fa-bag-shopping"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% else %}
+            <p class="empty-note">Nothing here yet — new pieces are on the way. Check back soon!</p>
+            {% endfor %}
+        </div>
+
+        <p class="empty-note" id="shop-no-results" style="display:none;">No products match your search. Try a different keyword or category.</p>
+    </section>
+
+{% include "_footer.html" %}
+
+    <script src="{{ url_for('static', filename='js/site.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/shop-filter.js') }}"></script>
+
+</body>
+</html>

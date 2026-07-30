@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{{ product.name }} | Loop & Love</title>
+    <meta name="description" content="{{ product.description }}">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,560;9..144,600;9..144,700&family=Karla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/product.css') }}">
+
+</head>
+<body>
+
+{% include "_header.html" %}
+{% include "_flash.html" %}
+
+    <p class="breadcrumb"><a href="/shop">Shop</a> / <a href="{{ url_for('products.category', category=product.category) }}">{{ product.category }}</a> / {{ product.name }}</p>
+
+    <section class="container product-page">
+
+        <div class="product-image">
+            <img src="{{ url_for('static', filename='assets/images/' + product.image) }}" alt="{{ product.name }}">
+            {% if product.stock <= 5 and product.stock > 0 %}
+            <span class="badge badge-low">Only {{ product.stock }} left</span>
+            {% elif product.featured %}
+            <span class="badge badge-bestseller">Bestseller</span>
+            {% endif %}
+        </div>
+
+        <div class="product-info">
+
+            <span class="chip">{{ product.category }} · Handmade Crochet</span>
+
+            <h1>{{ product.name }}</h1>
+
+            <div class="rating">
+                <span class="stars">★★★★★</span>
+                <span>{{ product.rating }} ({{ product.reviews }} reviews)</span>
+            </div>
+
+            <p class="product-price">₹{{ "%.0f"|format(product.price) }}</p>
+
+            <p class="product-desc">{{ product.description }}</p>
+
+            {% if product.stock == 0 %}
+            <p class="stock-note stock-out"><i class="fa-solid fa-circle-xmark"></i> Currently sold out — join the waitlist below.</p>
+            {% elif product.stock <= 5 %}
+            <p class="stock-note stock-low"><i class="fa-solid fa-fire"></i> Only {{ product.stock }} left in stock — order soon.</p>
+            {% else %}
+            <p class="stock-note stock-ok"><i class="fa-solid fa-circle-check"></i> In stock, ready to make just for you.</p>
+            {% endif %}
+
+            <div class="quantity">
+                <button type="button" class="qty-minus">−</button>
+                <span class="qty-value">1</span>
+                <button type="button" class="qty-plus">+</button>
+            </div>
+
+            <div class="product-buttons">
+                <button class="btn btn-full add-to-cart-btn" data-product-id="{{ product.id }}" data-product-name="{{ product.name }}" {% if product.stock == 0 %}disabled{% endif %}>
+                    <i class="fa-solid fa-bag-shopping"></i>
+                    {% if product.stock == 0 %}Notify Me{% else %}Add To Cart{% endif %}
+                </button>
+                <button class="wish-btn standalone" data-product-id="{{ product.id }}" title="Add to wishlist">
+                    <i class="fa-regular fa-heart"></i>
+                </button>
+            </div>
+
+            <div class="extra-info">
+                <p><i class="fa-solid fa-truck-fast"></i> Free shipping over ₹999</p>
+                <p><i class="fa-solid fa-rotate-left"></i> 7-day easy returns</p>
+                <p><i class="fa-solid fa-shield-heart"></i> Handmade with love</p>
+            </div>
+
+        </div>
+
+    </section>
+
+    {% if related_products %}
+    <section class="container">
+        <div class="loop-divider reveal">
+            <svg viewBox="0 0 120 40"><path d="M6 30 C 6 10, 34 10, 34 24 C 34 38, 62 38, 62 20 C 62 6, 90 6, 90 24 C 90 34, 110 32, 114 22"/></svg>
+        </div>
+
+        <div class="section-title reveal">
+            <span class="eyebrow">More to love</span>
+            <h2>You may also like</h2>
+        </div>
+
+        <div class="product-grid">
+            {% for item in related_products %}
+            <div class="product-card reveal">
+                <a href="{{ url_for('products.product_details', product_id=item.id) }}" class="product-card-media">
+                    <img src="{{ url_for('static', filename='assets/images/' + item.image) }}" alt="{{ item.name }}">
+                </a>
+                <button class="wish-btn" data-product-id="{{ item.id }}" title="Save to wishlist"><i class="fa-regular fa-heart"></i></button>
+                <div class="product-card-body">
+                    <a href="{{ url_for('products.product_details', product_id=item.id) }}"><h3>{{ item.name }}</h3></a>
+                    <div class="card-rating"><span class="stars">★★★★★</span><span>{{ item.rating }} ({{ item.reviews }})</span></div>
+                    <div class="product-card-footer">
+                        <p class="price">₹{{ "%.0f"|format(item.price) }}</p>
+                        <button class="add-to-cart-btn icon-btn" data-product-id="{{ item.id }}" data-product-name="{{ item.name }}" title="Add to cart">
+                            <i class="fa-solid fa-bag-shopping"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </section>
+    {% endif %}
+
+{% include "_footer.html" %}
+
+    <script src="{{ url_for('static', filename='js/site.js') }}"></script>
+
+</body>
+</html>

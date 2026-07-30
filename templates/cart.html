@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Your Cart | Loop & Love</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,560;9..144,600;9..144,700&family=Karla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/cart.css') }}">
+
+</head>
+<body>
+
+{% include "_header.html" %}
+{% include "_flash.html" %}
+
+    <section class="page-hero">
+        <span class="eyebrow" style="justify-content:center;">Almost there</span>
+        <h1>Your Cart</h1>
+        <p>{{ items|length }} item{{ 's' if items|length != 1 else '' }} in your bag.</p>
+    </section>
+
+    {% if items %}
+    <section class="container cart-layout">
+
+        <div class="cart-items">
+            {% for item in items %}
+            <div class="cart-row" data-cart-row data-product-id="{{ item.product.id }}" data-price="{{ item.product.price }}">
+                <img src="{{ url_for('static', filename='assets/images/' + item.product.image) }}" alt="{{ item.product.name }}">
+
+                <div class="cart-row-info">
+                    <a href="{{ url_for('products.product_details', product_id=item.product.id) }}"><h3>{{ item.product.name }}</h3></a>
+                    <span class="chip">{{ item.product.category }}</span>
+                    <p class="unit-price">₹{{ "%.0f"|format(item.product.price) }} each</p>
+                </div>
+
+                <div class="quantity">
+                    <button type="button" class="qty-minus">−</button>
+                    <span class="qty-value">{{ item.quantity }}</span>
+                    <button type="button" class="qty-plus">+</button>
+                </div>
+
+                <p class="line-total">₹{{ "%.0f"|format(item.product.price * item.quantity) }}</p>
+
+                <button class="remove-btn" title="Remove"><i class="fa-regular fa-trash-can"></i></button>
+            </div>
+            {% endfor %}
+        </div>
+
+        <div class="cart-summary card-surface">
+            <h3>Order Summary</h3>
+
+            <div class="summary-row">
+                <span>Subtotal</span>
+                <span class="cart-subtotal">₹{{ "%.0f"|format(subtotal) }}</span>
+            </div>
+
+            <div class="summary-row">
+                <span>Shipping</span>
+                <span>{{ "Free" if shipping == 0 else "₹" + "%.0f"|format(shipping) }}</span>
+            </div>
+
+            {% if subtotal < 999 %}
+            <p class="shipping-note"><i class="fa-solid fa-truck-fast"></i> Add ₹{{ "%.0f"|format(999 - subtotal) }} more for free shipping</p>
+            {% endif %}
+
+            <div class="summary-row summary-total">
+                <span>Total</span>
+                <span class="cart-total">₹{{ "%.0f"|format(total) }}</span>
+            </div>
+
+            <a href="/checkout" class="btn btn-full">Proceed to Checkout</a>
+            <a href="/shop" class="btn-ghost" style="justify-content:center;display:flex;margin-top:16px;">Continue Shopping <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+
+    </section>
+    {% else %}
+    <section class="container">
+        <div class="empty-cart">
+            <i class="fa-solid fa-bag-shopping"></i>
+            <h3>Your cart is empty</h3>
+            <p>Looks like you haven't added anything yet.</p>
+            <a href="/shop" class="btn">Start Shopping</a>
+        </div>
+    </section>
+    {% endif %}
+
+{% include "_footer.html" %}
+
+    <script src="{{ url_for('static', filename='js/site.js') }}"></script>
+
+</body>
+</html>

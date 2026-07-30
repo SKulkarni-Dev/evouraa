@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>My Account | Loop & Love</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,560;9..144,600;9..144,700&family=Karla:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css">
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/theme.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/account.css') }}">
+
+</head>
+<body>
+
+{% include "_header.html" %}
+{% include "_flash.html" %}
+
+    <section class="profile-layout">
+
+        <div class="profile-card">
+            <div class="profile-avatar">{{ user.fullname[0]|upper if user else "?" }}</div>
+            <h3>{{ user.fullname if user else "" }}</h3>
+            <p>{{ user.email if user else "" }}</p>
+            <a href="/logout" class="btn-outline"><i class="fa-solid fa-right-from-bracket"></i>&nbsp; Logout</a>
+        </div>
+
+        <div class="orders-section">
+            <h2>Order History</h2>
+
+            {% if orders %}
+                {% for order in orders %}
+                <div class="order-card">
+                    <div class="order-card-top">
+                        <h4>{{ order.order_number or ('Order #' + order.id|string) }}</h4>
+                        <span class="order-status status-{{ order.order_status|lower }}">{{ order.order_status }}</span>
+                    </div>
+                    <p>{{ order.items|length }} item{{ 's' if order.items|length != 1 else '' }} · ₹{{ "%.0f"|format(order.total) }} · {{ order.created_at.strftime('%d %b %Y') if order.created_at else '' }}</p>
+                    <p style="margin-top:4px;">
+                        Payment: <span class="admin-badge payment-{{ order.payment_status|lower }}">{{ order.payment_status }}</span>
+                    </p>
+
+                    <div style="display:flex;gap:10px;margin-top:14px;flex-wrap:wrap;">
+                        {% if order.payment_status != "Paid" and order.order_status not in ("Cancelled",) %}
+                        <a href="{{ url_for('checkout_bp.pay', order_id=order.id) }}" class="btn-outline" style="padding:8px 18px;font-size:12.5px;">Complete Payment</a>
+                        {% endif %}
+
+                        {% if order.order_status not in ("Shipped", "Delivered", "Cancelled") %}
+                        <form action="{{ url_for('checkout_bp.cancel_order', order_id=order.id) }}" method="POST"
+                              onsubmit="return confirm('Cancel this order?');">
+                            <button type="submit" class="btn-ghost" style="font-size:12.5px;color:var(--berry);">Cancel Order</button>
+                        </form>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endfor %}
+            {% else %}
+            <p class="empty-note" style="text-align:left;padding-left:0;">You haven't placed any orders yet — <a href="/shop">start shopping</a>.</p>
+            {% endif %}
+        </div>
+
+    </section>
+
+{% include "_footer.html" %}
+
+    <script src="{{ url_for('static', filename='js/site.js') }}"></script>
+
+</body>
+</html>
