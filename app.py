@@ -206,9 +206,10 @@ app.register_blueprint(admin_bp)
 # RUN APPLICATION
 # ==========================================
 
+# Create database tables when the app starts
+with app.app_context():
+    db.create_all()
+
+# Run locally
 if __name__ == "__main__":
-
-    with app.app_context():
-        db.create_all()
-
     app.run(debug=True)
